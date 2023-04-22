@@ -83,7 +83,7 @@ describe('GET /hotels', () => {
       expect(response.status).toEqual(httpStatus.UNAUTHORIZED);
     });
 
-    it('should respond with status 200 and with payment data', async () => {
+    it('should respond with status 402 when ticket is not paid', async () => {
       const user = await createUser();
       const token = await generateValidToken(user);
       const enrollment = await createEnrollmentWithAddress(user);
