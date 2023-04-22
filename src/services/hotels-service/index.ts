@@ -14,12 +14,13 @@ async function getAllHotels(userId:number, ticketId:number) {
 
  const ticket = await ticketsRepository.findTickeyById(ticketId);
  if (!ticket) throw notFoundError();
+ 
  if(ticket.status === "RESERVED" ) throw paymentRequired() 
  
- 
- 
- const ticketType = await ticketsRepository.ticketTypeId(ticket.ticketTypeId)
-if(ticketType.isRemote === true) throw paymentRequired() 
+  const ticketType = await ticketsRepository.ticketTypeId(ticket.ticketTypeId)
+
+
+ if(ticketType.isRemote === true) throw paymentRequired() 
 
 if(ticketType.includesHotel === false) throw paymentRequired()
 

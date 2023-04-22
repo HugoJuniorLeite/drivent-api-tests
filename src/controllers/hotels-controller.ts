@@ -1,5 +1,3 @@
-import { notFoundError } from "@/errors";
-import { paymentRequired } from "@/errors/payment-required-erro";
 import { AuthenticatedRequest } from "@/middlewares";
 import hotelsService from "@/services/hotels-service";
 import { Response } from "express";
@@ -9,8 +7,8 @@ import httpStatus from "http-status";
 export async function getAllHotels(req: AuthenticatedRequest, res: Response) {
     const { userId } = req;
     const ticketId = Number(req.query.ticketId);
-
-
+    
+    if(!ticketId) return res.sendStatus(httpStatus.NOT_FOUND);
     try {
 
     const allHotels =   await hotelsService.getAllHotels(userId, ticketId)
@@ -23,12 +21,10 @@ export async function getAllHotels(req: AuthenticatedRequest, res: Response) {
 
     }
 
-    return res.sendStatus(httpStatus.BAD_REQUEST)
 }
 
-
-
 export async function getRooms(req: AuthenticatedRequest, res: Response) {
+
     const { userId } = req;
     const ticketId = Number(req.query.ticketId);
     const hotelId = Number(req.params.hotelId)
