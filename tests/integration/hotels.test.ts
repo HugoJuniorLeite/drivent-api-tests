@@ -50,20 +50,14 @@ describe('GET /hotels', () => {
   });
 
   describe('when token is valid', () => {
-    it('should respond with status 404 if query param ticketId is missing', async () => {
-      const token = await generateValidToken();
 
-      const response = await server.get('/hotels').set('Authorization', `Bearer ${token}`);
-
-      expect(response.status).toEqual(httpStatus.NOT_FOUND);
-    });
 
     it('should respond with status 404 when given ticket doesnt exist', async () => {
       const user = await createUser();
       const token = await generateValidToken(user);
       await createEnrollmentWithAddress(user);
 
-      const response = await server.get('/payments?ticketId=1').set('Authorization', `Bearer ${token}`);
+      const response = await server.get('/hotels').set('Authorization', `Bearer ${token}`);
 
       expect(response.status).toEqual(httpStatus.NOT_FOUND);
     });
@@ -79,7 +73,7 @@ describe('GET /hotels', () => {
       const ticket = await createTicket(otherUserEnrollment.id, ticketType.id, TicketStatus.RESERVED);
 
       const response = await server.get(`/payments?ticketId=${ticket.id}`).set('Authorization', `Bearer ${token}`);
-
+      console.log(ticket)
       expect(response.status).toEqual(httpStatus.UNAUTHORIZED);
     });
 
@@ -94,6 +88,7 @@ describe('GET /hotels', () => {
 
       const response = await server.get(`/payments?ticketId=${ticket.id}`).set('Authorization', `Bearer ${token}`);
 
+
       expect(response.status).toEqual(httpStatus.OK);
       expect(response.body).toEqual({
         id: expect.any(Number),
@@ -103,7 +98,11 @@ describe('GET /hotels', () => {
         cardLastDigits: payment.cardLastDigits,
         createdAt: expect.any(String),
         updatedAt: expect.any(String),
+      
+      
       });
+
+      
     });
 
     it('should respond with status 404 when user doesnt have an enrollment yet', async () => {

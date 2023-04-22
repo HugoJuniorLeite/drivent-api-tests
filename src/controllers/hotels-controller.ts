@@ -6,12 +6,12 @@ import httpStatus from "http-status";
 
 export async function getAllHotels(req: AuthenticatedRequest, res: Response) {
     const { userId } = req;
-    const ticketId = Number(req.query.ticketId);
-    
-    if(!ticketId) return res.sendStatus(httpStatus.NOT_FOUND);
+    // const ticketId = Number(req.query.ticketId);
+  
+    // if(!ticketId) return res.sendStatus(httpStatus.NOT_FOUND);
     try {
 
-    const allHotels =   await hotelsService.getAllHotels(userId, ticketId)
+    const allHotels =   await hotelsService.getAllHotels(userId)
     return res.status(httpStatus.OK).send(allHotels);
         
     } catch (error) {

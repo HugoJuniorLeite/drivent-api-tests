@@ -4,23 +4,32 @@ import ticketsRepository from "@/repositories/tickets-repository";
 import { notFoundError, unauthorizedError } from "@/errors";
 
 import { paymentRequired } from "@/errors/payment-required-erro";
+import enrollmentRepository from "@/repositories/enrollment-repository";
+import { log } from "console";
 
 
 
 
-async function getAllHotels(userId:number, ticketId:number) {
+async function getAllHotels(userId:number) {
+
+console.log('aaaaaaaaaaa');
 
  //  const isTicket = await paymentsService.verifyTicketAndEnrollment(+ticketId, +userId)
 
- const ticket = await ticketsRepository.findTickeyById(ticketId);
+const enrollmentId = await enrollmentRepository.findEnrollment(+userId)
+
+
+const ticketId = await ticketsRepository.findTicketByEnrollmentId(enrollmentId.id)
+
+
+ const ticket = await ticketsRepository.findTickeyById(ticketId.id);
  if (!ticket) throw notFoundError();
  
  if(ticket.status === "RESERVED" ) throw paymentRequired() 
  
   const ticketType = await ticketsRepository.ticketTypeId(ticket.ticketTypeId)
 
-
- if(ticketType.isRemote === true) throw paymentRequired() 
+if(ticketType.isRemote === true) throw paymentRequired() 
 
 if(ticketType.includesHotel === false) throw paymentRequired()
 
