@@ -1,3 +1,5 @@
+import { notFoundError } from "@/errors";
+import { paymentRequired } from "@/errors/payment-required-erro";
 import { AuthenticatedRequest } from "@/middlewares";
 import hotelsService from "@/services/hotels-service";
 import { Response } from "express";
@@ -15,9 +17,13 @@ export async function getAllHotels(req: AuthenticatedRequest, res: Response) {
     return res.status(httpStatus.OK).send(allHotels);
         
     } catch (error) {
-        return res.sendStatus(httpStatus.NOT_FOUND);
+        if( error.name === "paymentRequired") return res.sendStatus(httpStatus.PAYMENT_REQUIRED)
+
+       if(error.name === "notFoundError") return res.sendStatus(httpStatus.NOT_FOUND);
+
     }
- 
+
+    return res.sendStatus(httpStatus.BAD_REQUEST)
 }
 
 
