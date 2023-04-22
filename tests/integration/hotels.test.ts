@@ -50,12 +50,12 @@ describe('GET /hotels', () => {
   });
 
   describe('when token is valid', () => {
-    it('should respond with status 400 if query param ticketId is missing', async () => {
+    it('should respond with status 404 if query param ticketId is missing', async () => {
       const token = await generateValidToken();
 
       const response = await server.get('/hotels').set('Authorization', `Bearer ${token}`);
 
-      expect(response.status).toEqual(httpStatus.BAD_REQUEST);
+      expect(response.status).toEqual(httpStatus.NOT_FOUND);
     });
 
     it('should respond with status 404 when given ticket doesnt exist', async () => {
@@ -105,5 +105,26 @@ describe('GET /hotels', () => {
         updatedAt: expect.any(String),
       });
     });
+
+    it('should respond with status 404 when user doesnt have an enrollment yet', async () => {
+        const token = await generateValidToken();
+  
+        const response = await server.get('/tickets').set('Authorization', `Bearer ${token}`);
+  
+        expect(response.status).toEqual(httpStatus.NOT_FOUND);
+      });
+  
+      it('should respond with status 404 when user doesnt have a ticket yet', async () => {
+        const user = await createUser();
+        const token = await generateValidToken(user);
+        await createEnrollmentWithAddress(user);
+  
+        const response = await server.get('/tickets').set('Authorization', `Bearer ${token}`);
+  
+        expect(response.status).toEqual(httpStatus.NOT_FOUND);
+      });
+  
+
+
   });
 });

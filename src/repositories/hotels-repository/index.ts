@@ -8,7 +8,17 @@ async function getAllHotels() {
 }
 
 
+async function getRoomId(hotelId:number) {
+
+    return await prisma.room.findMany({
+        where: {hotelId: hotelId}
+    }
+    )
+    
+}
+
 export default{
     getAllHotels,
+    getRoomId
 
 }
