@@ -18,7 +18,10 @@ async function getAllHotels(userId:number) {
 // console.log(enrollmentId.id,"enrollmentId")
 
   const ticket = await ticketsRepository.findTicketByEnrollmentId(enrollmentId.id)
-  if (!ticket || !userId) throw notFoundError();
+  if (!ticket.id || !userId) throw notFoundError();
+
+ // if (!ticketId) return res.sendStatus(httpStatus.BAD_REQUEST);
+ 
 
   if(ticket.status === "RESERVED" || ticket.TicketType.isRemote || !ticket.TicketType.includesHotel ) throw paymentRequired() 
 

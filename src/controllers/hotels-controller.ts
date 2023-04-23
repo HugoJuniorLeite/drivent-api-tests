@@ -9,7 +9,7 @@ export async function getAllHotels(req: AuthenticatedRequest, res: Response) {
 
      // const ticketId = Number(req.query.ticketId);
   
-    // if(!ticketId) return res.sendStatus(httpStatus.NOT_FOUND);
+     if(!userId) return res.sendStatus(httpStatus.NOT_FOUND);
     try {
 
     const allHotels =   await hotelsService.getAllHotels(userId)
