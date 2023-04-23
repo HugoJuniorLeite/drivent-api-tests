@@ -31,6 +31,9 @@ export async function getRooms(req: AuthenticatedRequest, res: Response) {
 
     const { userId } = req;
     const hotelId = Number(req.params.hotelId)
+    if(!hotelId){
+        return res.sendStatus(httpStatus.NOT_FOUND)
+    }
 
     try {
 
