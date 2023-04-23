@@ -6,7 +6,8 @@ import httpStatus from "http-status";
 
 export async function getAllHotels(req: AuthenticatedRequest, res: Response) {
     const { userId } = req;
-    // const ticketId = Number(req.query.ticketId);
+
+     // const ticketId = Number(req.query.ticketId);
   
     // if(!ticketId) return res.sendStatus(httpStatus.NOT_FOUND);
     try {
@@ -15,11 +16,11 @@ export async function getAllHotels(req: AuthenticatedRequest, res: Response) {
     return res.status(httpStatus.OK).send(allHotels);
         
     } catch (error) {
-        if( error.name === "paymentRequired") return res.sendStatus(httpStatus.PAYMENT_REQUIRED)
-
-       if(error.name === "notFoundError") return res.sendStatus(httpStatus.NOT_FOUND);
-
+        
+        if(error.name === "notFoundError") return res.sendStatus(httpStatus.NOT_FOUND);
+        
     }
+    return res.sendStatus(httpStatus.PAYMENT_REQUIRED)
 
 }
 

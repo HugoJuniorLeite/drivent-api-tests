@@ -5,50 +5,42 @@ import { notFoundError, unauthorizedError } from "@/errors";
 
 import { paymentRequired } from "@/errors/payment-required-erro";
 import enrollmentRepository from "@/repositories/enrollment-repository";
-import { log } from "console";
+import ticketService from "../tickets-service";
 
 
 
 
 async function getAllHotels(userId:number) {
 
-console.log('aaaaaaaaaaa');
+ const enrollmentId = await enrollmentRepository.findEnrollment(+userId)
+ if (!enrollmentId) throw notFoundError();
 
- //  const isTicket = await paymentsService.verifyTicketAndEnrollment(+ticketId, +userId)
+// console.log(enrollmentId.id,"enrollmentId")
 
-const enrollmentId = await enrollmentRepository.findEnrollment(+userId)
+  const ticket = await ticketsRepository.findTicketByEnrollmentId(enrollmentId.id)
+  //if (!ticket) throw notFoundError();
+
+  if(!ticket || ticket.status === "RESERVED" || ticket.TicketType.isRemote || ticket.TicketType.includesHotel ) throw paymentRequired() 
 
 
-const ticketId = await ticketsRepository.findTicketByEnrollmentId(enrollmentId.id)
-
-
- const ticket = await ticketsRepository.findTickeyById(ticketId.id);
- if (!ticket) throw notFoundError();
+//  const ticket = await ticketsRepository.findTickeyById(ticketId.id);
  
- if(ticket.status === "RESERVED" ) throw paymentRequired() 
  
-  const ticketType = await ticketsRepository.ticketTypeId(ticket.ticketTypeId)
+//   const ticketType = await ticketsRepository.ticketTypeId(ticket.ticketTypeId)
 
-if(ticketType.isRemote === true) throw paymentRequired() 
+// if(ticketType.isRemote === true) throw paymentRequired() 
 
-if(ticketType.includesHotel === false) throw paymentRequired()
+// if(ticketType.includesHotel === false) throw paymentRequired()
 
 // const enrollment = await enrollmentRepository.findById(ticket.enrollmentId);
 // if (!enrollment) throw notFoundError();
-
+ 
 // if (enrollment.userId !== userId) throw unauthorizedError();  
 
 
-
-  // const isPayments = await paymentsService.getPaymentByTicketId(+ticketId, +userId) 
-   
-
     const result =  await hotelsRepository.getAllHotels()
+    //if(!result) throw notFoundError();
 
- //   console.log(isPayments, "isPayments")
-   // console.log(isTicket, "isTicket")
-  //  console.log(result, "result")
-     
  return result
 }
 
