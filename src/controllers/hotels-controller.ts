@@ -27,12 +27,11 @@ export async function getAllHotels(req: AuthenticatedRequest, res: Response) {
 export async function getRooms(req: AuthenticatedRequest, res: Response) {
 
     const { userId } = req;
-    const ticketId = Number(req.query.ticketId);
     const hotelId = Number(req.params.hotelId)
 
     try {
 
-    const roomId =   await hotelsService.getRoomId(userId, ticketId, hotelId)
+    const roomId =   await hotelsService.getRoomId(userId, hotelId)
     return res.status(httpStatus.OK).send(roomId);
         
     } catch (error) {

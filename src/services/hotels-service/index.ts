@@ -20,7 +20,7 @@ async function getAllHotels(userId:number) {
   const ticket = await ticketsRepository.findTicketByEnrollmentId(enrollmentId.id)
   //if (!ticket) throw notFoundError();
 
-  if(!ticket || ticket.status === "RESERVED" || ticket.TicketType.isRemote || ticket.TicketType.includesHotel ) throw paymentRequired() 
+  if(!ticket || ticket.status === "RESERVED" || ticket.TicketType.isRemote || !ticket.TicketType.includesHotel ) throw paymentRequired() 
 
 
 //  const ticket = await ticketsRepository.findTickeyById(ticketId.id);
@@ -45,17 +45,21 @@ async function getAllHotels(userId:number) {
 }
 
 
-async function getRoomId(userId:number, ticketId:number, hotelId:number)  {
+async function getRoomId(userId:number, hotelId:number)  {
 
-    const isPayments = await paymentsService.getPaymentByTicketId(+ticketId, +userId) 
-    const isTicket = await paymentsService.verifyTicketAndEnrollment(+ticketId, +userId)
+ 
+   const enrollmentId = await enrollmentRepository.findEnrollment(+userId)
+   if (!enrollmentId) throw notFoundError();
+  
+  // console.log(enrollmentId.id,"enrollmentId")
+  
+    const ticket = await ticketsRepository.findTicketByEnrollmentId(enrollmentId.id)
+    //if (!ticket) throw notFoundError();
+  
+    if(!ticket || ticket.status === "RESERVED" || ticket.TicketType.isRemote || !ticket.TicketType.includesHotel ) throw paymentRequired() 
+  
    
-    
        const result =  await hotelsRepository.getRoomId(hotelId)
-   
-       console.log(isPayments, "isPayments")
-       console.log(isTicket, "isTicket")
-       console.log(result, "result")
         
     return result
    }
