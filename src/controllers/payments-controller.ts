@@ -15,6 +15,7 @@ export async function getPaymentByTicketId(req: AuthenticatedRequest, res: Respo
 
     return res.status(httpStatus.OK).send(payment);
   } catch (error) {
+    console.log(error.name, "errorrrrrrrrrrrrrrrrrrr")
     if (error.name === 'UnauthorizedError') {
       return res.sendStatus(httpStatus.UNAUTHORIZED);
     }
