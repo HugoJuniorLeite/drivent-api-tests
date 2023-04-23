@@ -38,6 +38,8 @@ async function getAllHotels(userId:number) {
 // if (enrollment.userId !== userId) throw unauthorizedError();  
 
     const result =  await hotelsRepository.getAllHotels()
+    console.log(result, "resultttttttttttttt");
+    
     if(!result) throw notFoundError();
 
  return result

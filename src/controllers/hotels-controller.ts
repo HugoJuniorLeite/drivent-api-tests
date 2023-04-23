@@ -13,6 +13,9 @@ export async function getAllHotels(req: AuthenticatedRequest, res: Response) {
     try {
 
     const allHotels =   await hotelsService.getAllHotels(userId)
+    if (!allHotels) {
+        return res.sendStatus(httpStatus.NOT_FOUND)
+    }
     return res.status(httpStatus.OK).send(allHotels);
         
     } catch (error) {
