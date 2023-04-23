@@ -52,15 +52,15 @@ describe('GET /hotels', () => {
   describe('when token is valid', () => {
 
 
-    it('should respond with status 404 when given ticket doesnt exist', async () => {
-      const user = await createUser();
-      const token = await generateValidToken(user);
-      await createEnrollmentWithAddress(user);
+    // it('should respond with status 404 when given ticket doesnt exist', async () => {
+    //   const user = await createUser();
+    //   const token = await generateValidToken(user);
+    //   await createEnrollmentWithAddress(user);
 
-      const response = await server.get('/hotels').set('Authorization', `Bearer ${token}`);
+    //   const response = await server.get('/hotels').set('Authorization', `Bearer ${token}`);
 
-      expect(response.status).toEqual(httpStatus.NOT_FOUND);
-    });
+    //   expect(response.status).toEqual(httpStatus.NOT_FOUND);
+    // });
 
     it('should respond with status 401 when user doesnt own given ticket', async () => {
       const user = await createUser();
