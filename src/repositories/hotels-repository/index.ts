@@ -14,6 +14,7 @@ async function getRoomId(hotelId:number) {
         where: {hotelId: hotelId},
         include: {
             Hotel: true, //join
+            
           }, 
     }
     )
