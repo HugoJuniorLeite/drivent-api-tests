@@ -47,7 +47,9 @@ export async function getRooms(req: AuthenticatedRequest, res: Response) {
     return res.status(httpStatus.OK).send(roomId);
         
     } catch (error) {
-        return res.sendStatus(httpStatus.NOT_FOUND);
+        if(error.name === "NotFoundError") return res.sendStatus(httpStatus.NOT_FOUND);
+        if(error.name === "paymentRequired") return res.sendStatus(httpStatus.PAYMENT_REQUIRED);
+
     }
- 
+    return res.sendStatus(httpStatus.PAYMENT_REQUIRED)
 }
