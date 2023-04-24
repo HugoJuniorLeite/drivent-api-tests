@@ -1,6 +1,7 @@
 import { AuthenticatedRequest } from "@/middlewares";
 import { InputHotelBody} from "@/protocols";
 import hotelsService from "@/services/hotels-service";
+import { error } from "console";
 import { Response } from "express";
 import httpStatus from "http-status";
 
@@ -20,11 +21,13 @@ export async function getAllHotels(req: AuthenticatedRequest, res: Response) {
     return res.status(httpStatus.OK).send(allHotels);
         
     } catch (error) {
+
 //        return res.sendStatus(httpStatus.NOT_FOUND);      
-        if(error.name === "notFoundError") return res.sendStatus(httpStatus.NOT_FOUND);
+        if(error.name === "NotFoundError") return res.sendStatus(httpStatus.NOT_FOUND);
         if(error.name === "paymentRequired") return res.sendStatus(httpStatus.PAYMENT_REQUIRED);
     }
-    //return res.sendStatus(httpStatus.PAYMENT_REQUIRED)
+
+    return res.sendStatus(httpStatus.PAYMENT_REQUIRED)
 
 }
 
@@ -33,7 +36,6 @@ export async function getRooms(req: AuthenticatedRequest, res: Response) {
     const { userId } = req;
     const {hotelId} = req.params
 
-    console.log(hotelId)
     
     if(!hotelId){
         return res.sendStatus(httpStatus.NOT_FOUND)

@@ -43,7 +43,7 @@ async function getAllHotels(userId:number) {
     const result =  await hotelsRepository.getAllHotels()
     console.log(result, "resultttttttttttttt");
     
-    if(!result) throw notFoundError();
+    if(!result)  throw  console.log("caiu aqui") , notFoundError();
 
  return result
 }
@@ -64,7 +64,7 @@ async function getRoomId(userId:number, hotelId:number)  {
   
    
        const result =  await hotelsRepository.getRoomId(hotelId)
-    if(!result) throw notFoundError();
+    if(!result) throw  console.log("caiu aqui") , notFoundError();
        
     return result
    }
