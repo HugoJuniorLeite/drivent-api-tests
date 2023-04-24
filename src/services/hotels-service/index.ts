@@ -29,9 +29,14 @@ async function getRoomId(userId: number, hotelId: number) {
   if (ticket.status === 'RESERVED' || ticket.TicketType.isRemote || !ticket.TicketType.includesHotel)
     throw paymentRequired();
 
-  const result = await hotelsRepository.getRoomId(hotelId);
-  if (!result) throw notFoundError();
-  return result;
+
+    const resultHotels = await hotelsRepository.getAllHotels();
+    if (resultHotels.length === 0) throw notFoundError();
+        
+    const result = await hotelsRepository.getRoomId(+hotelId);
+    if (!result) throw notFoundError();
+    return {resultHotels, Rooms:[...result]};
+
 }
 
 export default {
